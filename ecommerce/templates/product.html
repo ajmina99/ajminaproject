@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<br><br>
+
+    <!--category image as banner-->
+<div class="row">
+    <img src="{{ main_cate.image.url }}" width="100%"; height="700px">
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center fw-bold">{{main_cate.title}}</h1>
+            <p>{{main_cate.desc}}</p>
+        </div>
+    </div>
+</div>
+
+<!--product card-->
+<div class="container">
+    <div class="row">
+        {% for i in pro %}
+        <div class="col-md-3 col-6">
+<div class="card" style="width: 15rem;">
+    <a href="{% url 'shop:product_details' i.id %}"><img src="{{i.image.url}}" class="card-img-top" height="300px" width="100%" alt="..."></a>
+  <div class="card-body">
+      <h5 class="card-title" style="color: black;">{{i.name}}</h5>
+      <p class="card-text">{{i.price}}</p>
+  </div>
+</div></div>{% endfor %}
+</div></div>
+
+
+
+{% endblock %}

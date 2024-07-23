@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ecommerce</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+</head>
+<body>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+<!--logo-->
+<div class="logo">
+    <h1 class="text-center">Trends</h1>
+</div>
+<!--    navbar-->
+   <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+    <a class="navbar-brand" href="#">My shop</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+           <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            All categories
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% for i in links %}
+            <li><a class="dropdown-item" href="{% url 'shop:product' i.id %}">{{i.title}}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+          <a class="nav-link" href="{% url 'shop:logout' %}">Logout</a>
+        </li>
+          {% if user.is_superuser != True %}
+          <li class="nav-item">
+              <a href="{% url 'cart:cart_view' %}" style=""><img src="{% static 'images/cart.png' %}" width="30px" height="30px"><sup class="fw-bold" style="color:red;fond-size:15px;text-decoration:none;">{{count}}</sup> </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active fs-6" href="{% url 'cart:order_view' %}">Your Orders</a>
+          </li>
+          {% endif %}
+          {% else %}
+          <li class="nav-item">
+          <a class="nav-link" href="{% url 'shop:register' %}">Register</a>
+        </li>
+           <li class="nav-item">
+               <a class="nav-link" href="{% url 'shop:login' %}">Login</a></li>
+           {% endif %}
+
+          <form class="d-flex" method="post" action="{% url 'search:search_products' %}">
+              {% csrf_token %}
+        <input class="form-control me-2" type="search" name='q' placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+
+    </div>
+</nav>
+{% block content %}
+{% endblock %}
+<hr>
+<!--footer-->
+<footer class="bg-dark text-light text-center">
+  <div class="container">
+    <p>Copyright &copy;2024 Myshop.All Rights Reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
